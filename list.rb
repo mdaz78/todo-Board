@@ -27,6 +27,8 @@ class List
   end
 
   def swap(index_1, index_2)
+    index_1 = index_1.to_i
+    index_2 = index_2.to_i
     return false unless valid_index?(index_1) && valid_index?(index_2)
 
     @items[index_1], @items[index_2] = @items[index_2], @items[index_1]
@@ -43,11 +45,17 @@ class List
     @items.first
   end
 
-  def print
-    puts @label
-    @items.each_with_index do |item, index|
-      puts "#{index} - #{item.title} - #{item.deadline}"
+  def print(index = nil)
+    if index.nil?
+      puts @label
+      @items.each_with_index do |item, index|
+        puts "#{index} - #{item.title} - #{item.deadline}"
+      end
+    else
+      index = index.to_i
+      print_full_item(index)
     end
+
   end
 
   def print_full_item(index)
@@ -61,10 +69,12 @@ class List
   end
 
   def print_priority
-    self.print_full_item(0)
+    print_full_item(0)
   end
 
   def up(index, amount = 1)
+    index = index.to_i
+    amount = amount.to_i
     return false unless valid_index?(index)
 
     while index.positive? && amount.positive?
@@ -77,6 +87,8 @@ class List
   end
 
   def down(index, amount = 1)
+    index = index.to_i
+    amount = amount.to_i
     return false unless valid_index?(index)
 
     while index < @items.length - 1 && amount.positive?
