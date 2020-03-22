@@ -49,7 +49,7 @@ class List
     if index.nil?
       puts @label
       @items.each_with_index do |item, index|
-        puts "#{index} - #{item.title} - #{item.deadline}"
+        puts "#{index} - #{item.title} - #{item.deadline} - #{item.done}"
       end
     else
       index = index.to_i
@@ -64,6 +64,7 @@ class List
 
     puts "#{item.title} - #{item.deadline}"
     puts "#{item.description}" unless item.description.empty?
+    puts "#{item.done}"
 
     puts '----------------------'
   end
@@ -102,7 +103,22 @@ class List
   end
 
   def sort_by_date!
-    @items.sort_by! { |item| item.deadline }
+    @items.sort_by!(&:deadline)
+  end
+
+  def toggle_item(index)
+    index = index.to_i
+    item = @items[index]
+    item.toggle
+  end
+
+  def remove_item(index)
+    index = index.to_i
+    @items = @items.reject.with_index { |item, idx| idx == index }
+  end
+
+  def purge
+    @items = @items.reject(&:done)
   end
 
 end

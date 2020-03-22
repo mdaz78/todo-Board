@@ -25,6 +25,10 @@ class TodoBoard
       @list.print_priority
     when 'print'
       @list.print(*args)
+    when 'toggle'
+      @list.toggle_item(*args)
+    when 'rm'
+      @list.remove_item(*args)
     when 'quit'
       return false
     else
@@ -42,7 +46,9 @@ class TodoBoard
     puts '5. sort'
     puts '6. priority'
     puts '7. print <optional_index>'
-    puts '8. quit'
+    puts '8. toggle <index>'
+    puts '9. rm <index>'
+    puts '10. quit'
   end
 
   def run
