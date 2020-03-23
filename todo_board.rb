@@ -29,6 +29,8 @@ class TodoBoard
       @list.toggle_item(*args.map(&:to_i))
     when 'rm'
       @list.remove_item(*args.map(&:to_i))
+    when 'purge'
+      @list.purge
     when 'quit'
       return :quit
     else
@@ -48,7 +50,8 @@ class TodoBoard
     puts '7. print <optional_index>'
     puts '8. toggle <index>'
     puts '9. rm <index>'
-    puts '10. quit'
+    puts '10. purge'
+    puts '11. quit'
   end
 
   def run
