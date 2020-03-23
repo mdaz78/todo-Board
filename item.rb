@@ -2,7 +2,7 @@ require 'date'
 
 class Item
   attr_accessor :title, :description
-  attr_reader :deadline
+  attr_reader :deadline, :done
 
   # date here is a string of the format
   # YYYY-MM-DD
@@ -17,15 +17,20 @@ class Item
   end
 
   def initialize(title, deadline, description)
-    raise 'Invalid Date' unless Item.valid_date?(deadline)
+    raise 'Deadline is not valid' unless Item.valid_date?(deadline)
 
     @title = title
     @deadline = deadline if Item.valid_date?(deadline)
     @description = description
+    @done = false
   end
 
-  def deadline=(date)
-    raise 'Invalid Date' unless Item.valid_date?(date)
-    @deadline = date
+  def deadline=(new_deadline)
+    raise 'Invalid Date' unless Item.valid_date?(new_deadline)
+    @deadline = new_deadline
+  end
+
+  def toggle
+    @done = !@done
   end
 end

@@ -2,31 +2,56 @@ require_relative 'item.rb'
 require_relative 'list.rb'
 
 class TodoBoard
-  def initialize(label)
-    @list = List.new(label)
+  def initialize
+    @lists = {}
   end
 
   def get_command
     puts 'Enter a command:'
-    cmd, *args = gets.chomp.split(' ')
+    cmd, label, *args = gets.chomp.split(' ')
 
     case cmd
+    when 'mklist'
+      @lists[label] = List.new(label)
+
+    when 'ls'
+      puts @lists.keys
+
+    when 'showall'
+      @lists.each_value(&:print)
+
     when 'mktodo'
-      @list.add_item(*args)
+      @lists[label].add_item(*args)
+
+    when 'toggle'
+      @lists[label].toggle_item(args.first.to_i)
+
+    when 'rm'
+      @lists[label].remove_item(*args.map(&:to_i))
+
+    when 'purge'
+      @lists[label].purge
+
     when 'up'
-      @list.up(*args)
+      @lists[label].up(*args.map(&:to_i))
+
     when 'down'
-      @list.down(*args)
+      @lists[label].down(*args.map(&:to_i))
+
     when 'swap'
-      @list.swap(*args)
+      @lists[label].swap(*args.map(&:to_i))
+
     when 'sort'
-      @list.sort_by_date!
+      @lists[label].sort_by_date!
+
     when 'priority'
-      @list.print_priority
+      @lists[label].print_priority
+
     when 'print'
-      @list.print(*args)
+      @lists[label].print(*args.map(&:to_i))
+
     when 'quit'
-      return false
+      return :quit
     else
       p 'Sorry, that command is not recognized.'
     end
@@ -35,19 +60,26 @@ class TodoBoard
 
   def print_list_of_commands
     puts '== List of Commands =='
-    puts '1. mktodo <title> <deadline> <optional description>'
-    puts '2. up <index> <optional amount>'
-    puts '3. down <index> <optional amount>'
-    puts '4. swap <index_1> <index_2>'
-    puts '5. sort'
-    puts '6. priority'
-    puts '7. print <optional_index>'
-    puts '8. quit'
+    puts '01. mklist <new_list_label>'
+    puts '02. ls'
+    puts '03. showall'
+    puts '04. mktodo <list_label> <item_title> <item_deadline> <optional_item_description>'
+    puts '05. toggle <list_label> <item_index>'
+    puts '06. rm <list_label> <item_index>'
+    puts '07. purge'
+    puts '08. up <list_label> <index> <optional amount>'
+    puts '09. down <list_label> <index> <optional amount>'
+    puts '10. swap <list_label> <index_1> <index_2>'
+    puts '11. sort <list_label>'
+    puts '12. priority <list_label>'
+    puts '13. print <list_label> <optional_index>'
+    puts '14. quit'
   end
 
   def run
     print_list_of_commands
-    continue_loop = true
-    continue_loop = get_command while continue_loop != false
+    loop do
+      return if get_command == :quit
+    end
   end
 end
