@@ -14,23 +14,23 @@ class TodoBoard
     when 'mktodo'
       @list.add_item(*args)
     when 'up'
-      @list.up(*args)
+      @list.up(*args.map(&:to_i))
     when 'down'
-      @list.down(*args)
+      @list.down(*args.map(&:to_i))
     when 'swap'
-      @list.swap(*args)
+      @list.swap(*args.map(&:to_i))
     when 'sort'
       @list.sort_by_date!
     when 'priority'
       @list.print_priority
     when 'print'
-      @list.print(*args)
+      @list.print(*args.map(&:to_i))
     when 'toggle'
-      @list.toggle_item(*args)
+      @list.toggle_item(*args.map(&:to_i))
     when 'rm'
-      @list.remove_item(*args)
+      @list.remove_item(*args.map(&:to_i))
     when 'quit'
-      return false
+      return :quit
     else
       p 'Sorry, that command is not recognized.'
     end
@@ -53,7 +53,8 @@ class TodoBoard
 
   def run
     print_list_of_commands
-    continue_loop = true
-    continue_loop = get_command while continue_loop != false
+    loop do
+      return if get_command == :quit
+    end
   end
 end
