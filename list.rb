@@ -27,8 +27,6 @@ class List
   end
 
   def swap(index_1, index_2)
-    index_1 = index_1.to_i
-    index_2 = index_2.to_i
     return false unless valid_index?(index_1) && valid_index?(index_2)
 
     @items[index_1], @items[index_2] = @items[index_2], @items[index_1]
@@ -52,7 +50,6 @@ class List
         puts "#{index} - #{item.title} - #{item.deadline} - #{item.done}"
       end
     else
-      index = index.to_i
       print_full_item(index)
     end
 
@@ -63,8 +60,8 @@ class List
     puts '----------------------'
 
     puts "#{item.title} - #{item.deadline}"
-    puts "#{item.description}" unless item.description.empty?
-    puts "#{item.done}"
+    puts item.description.to_s unless item.description.empty?
+    puts item.done.to_s
 
     puts '----------------------'
   end
@@ -74,8 +71,6 @@ class List
   end
 
   def up(index, amount = 1)
-    index = index.to_i
-    amount = amount.to_i
     return false unless valid_index?(index)
 
     while index.positive? && amount.positive?
@@ -88,8 +83,6 @@ class List
   end
 
   def down(index, amount = 1)
-    index = index.to_i
-    amount = amount.to_i
     return false unless valid_index?(index)
 
     while index < @items.length - 1 && amount.positive?
@@ -107,13 +100,11 @@ class List
   end
 
   def toggle_item(index)
-    index = index.to_i
     item = @items[index]
     item.toggle
   end
 
   def remove_item(index)
-    index = index.to_i
     @items = @items.reject.with_index { |item, idx| idx == index }
   end
 
